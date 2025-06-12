@@ -43,14 +43,15 @@ def bot_session():
 
     while i < 3600 and response_timestamp < session_timestamp:
         user_input = requests.get(f"{TELEGRAM_API_URL}{TOKEN}/getUpdates?offset=-1").json()
+        last_chat_id = user_input['result'][0]['message']['chat']['id']
         response_timestamp = user_input.get("result", [{}])[0].get("message", {}).get("date", "")
 
         if i == 2700:
             requests.get(f"{TELEGRAM_API_URL}{TOKEN}/sendMessage", data={"chat_id": CHAT_ID, "text": "Turning off in 15 minutes⏳"})
-
+            
         i += 1
-    
-    if response_timestamp < session_timestamp and user_input['result'][0]['message']['chat']['id'] == CHAT_ID:
+
+    if response_timestamp < session_timestamp and last_chat_id == CHAT_ID:
         requests.get(f"{TELEGRAM_API_URL}{TOKEN}/sendMessage", data={"chat_id": CHAT_ID, "text": "Okay see you next month I guess!"})
     else:
         salary = user_input.get("result", [{}])[0].get("message", {}).get("text", "")
