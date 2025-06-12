@@ -8,4 +8,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
+RUN mkdir logs
+
 CMD ["python", "investorTgBot.py"]
