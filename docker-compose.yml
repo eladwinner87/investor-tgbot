@@ -1,0 +1,10 @@
+services:
+  investor:
+    image: investor
+    env_file:
+      - .env
+    volumes:
+      - logs:/app/logs
+
+volumes:
+  logs:
