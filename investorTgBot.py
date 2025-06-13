@@ -1,9 +1,13 @@
 import requests
 import time, datetime
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 def getBlinkRate():
-    API_URL = "http://api.exchangeratesapi.io/v1/latest"
-    API_KEY = "3d073799b70cc013a5d1be8ab9b1d631"
+    API_URL = os.getenv("API_URL")
+    API_KEY = os.getenv("API_KEY")
 
     # response = requests.get(API_URL, params={
     #     "access_key": API_KEY,
@@ -28,9 +32,9 @@ def investLogic(salary):
 
 def bot_session():
     TELEGRAM_API_URL = "https://api.telegram.org/bot"
-    TOKEN = "7912633230:AAGtNjdItB-kg6XoaZh0GDIxC2lUVjHJFf8"
-    MY_CHAT_ID = "380382224"
-    LOGS_PATH = "./logs"
+    TOKEN = os.getenv("TOKEN")
+    MY_CHAT_ID = os.getenv("MY_CHAT_ID")
+    LOGS_PATH = os.getenv("LOGS_PATH", "./logs")
 
     requests.get(f"{TELEGRAM_API_URL}{TOKEN}/sendMessage", data={"chat_id": MY_CHAT_ID, "text":
         "Hey, it's time for investments📈💵!"
