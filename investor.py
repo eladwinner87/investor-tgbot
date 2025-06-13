@@ -6,8 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def getExchangeRate():
-    API_URL = os.getenv("API_URL")
-    API_KEY = os.getenv("API_KEY")
+    API_URL, API_KEY = os.getenv("API_URL"), os.getenv("API_KEY")
 
     match os.getenv("ENV"):
         case 'dev':
@@ -22,8 +21,7 @@ def getExchangeRate():
     return realRate * 1.014204545454545
 
 def investLogic(salary):
-    toInvest = salary * 0.65
-    rate = getExchangeRate()
+    toInvest, rate = salary * 0.65, getExchangeRate()
     btb = toInvest / 3
     stocksILS = (toInvest - btb)
     stocks = stocksILS / rate
@@ -34,35 +32,29 @@ def investLogic(salary):
 
 def bot_session():
     TELEGRAM_API_URL = "https://api.telegram.org/bot"
-    token = os.getenv("TG_BOT_TOKEN")
-    myChatId = os.getenv("MY_CHAT_ID")
-    logsPath = os.getenv("LOGS_PATH", "./logs")
+    token, myChatId, logsPath = os.getenv("TG_BOT_TOKEN"), float(os.getenv("MY_CHAT_ID")), os.getenv("LOGS_PATH", "./logs")
 
     requests.get(f"{TELEGRAM_API_URL}{token}/sendMessage", data={"chat_id": myChatId, "text":
-        "Hey, it's time for investments📈💵!\nwhat's the salary this month?💰\nI'll be here for the next hour :) "})
+        "Hey, it's time for investments📈💵!\nwhat's the salary this month?💰\nTake your time :) "})
     
-    session_timestamp = int(time.time())
+    session_timestamp, response_timestamp, i = int(time.time()), int(time.time()), 0
 
-    response_timestamp, i = 0, 0
-
-    while i < 3600 and response_timestamp < session_timestamp:
-        user_input = requests.get(f"{TELEGRAM_API_URL}{token}/getUpdates?offset=-1").json()
-        chat_id = user_input['result'][0]['message']['chat']['id']
-        response_timestamp = user_input.get("result", [{}])[0].get("message", {}).get("date", "")
+    while not response_timestamp > session_timestamp and i < 4000:
+        response = requests.get(f"{TELEGRAM_API_URL}{token}/getUpdates?offset=-1").json()
+        chat_id = response['result'][0]['message']['chat']['id']
+        response_timestamp = response.get("result", [{}])[0].get("message", {}).get("date", "")
 
         if i == 2700:
-            requests.get(f"{TELEGRAM_API_URL}{token}/sendMessage", data={"chat_id": myChatId, "text": "Turning off in 15 minutes⏳"})
-
+            requests.get(f"{TELEGRAM_API_URL}{token}/sendMessage", data={"chat_id": myChatId, "text": "Turning off soon⏳"})
         i += 1
 
-    if response_timestamp < session_timestamp and chat_id == myChatId:
-        requests.get(f"{TELEGRAM_API_URL}{token}/sendMessage", data={"chat_id": myChatId, "text": "Okay see you next month I guess!"})
-    else:
-        salary = user_input.get("result", [{}])[0].get("message", {}).get("text", "")
-        
-        result = investLogic(float(salary))
+    if response_timestamp > session_timestamp and chat_id == myChatId:
+        salary = float(response.get("result", [{}])[0].get("message", {}).get("text", ""))
+        result = investLogic(salary)
         requests.get(f"{TELEGRAM_API_URL}{token}/sendMessage", data={"chat_id": myChatId, "text": f"🧮 Calculations for {salary} ILS:\n{result}"})
-        with open(f"{logsPath}/invest_guide_{datetime.datetime.now().strftime('%d-%m-%Y')}.txt", "w") as f:
+        with open(f"{logsPath}/investor_sum_{datetime.datetime.now().strftime('%d-%m-%Y')}.txt", "w") as f:
            print(result, file=f)
+    else:
+        requests.get(f"{TELEGRAM_API_URL}{token}/sendMessage", data={"chat_id": myChatId, "text": "Okay see you next month I guess!"})
 
 bot_session()

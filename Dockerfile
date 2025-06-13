@@ -1,4 +1,4 @@
-FROM python:3.9.23-slim-bullseye
+FROM python:3-alpine3.22
 
 WORKDIR /app
 
@@ -10,4 +10,4 @@ COPY . .
 
 RUN mkdir logs
 
-CMD ["python", "investorTgBot.py"]
+CMD ["python", "investor.py"]
