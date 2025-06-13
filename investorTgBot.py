@@ -1,34 +1,35 @@
 import requests
 import time, datetime
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 
 load_dotenv()
 
-def getBlinkRate():
+def getExchangeRate():
     API_URL = os.getenv("API_URL")
     API_KEY = os.getenv("API_KEY")
 
-    response = requests.get(API_URL, params={
-        "access_key": API_KEY,
-        "symbols": "USD,ILS",
-    }).json()
-
-    # EXAMPLE RESPONSE:
-    # response = {'success': True, 'timestamp': 1748966344, 'base': 'EUR', 'date': '2025-06-03', 'rates': {'USD': 1.137132, 'ILS': 4.002764}}
+    match os.getenv("ENV"):
+        case 'dev':
+            response = {'success': True, 'timestamp': 1748966344, 'base': 'EUR', 'date': '2025-06-03', 'rates': {'USD': 1.137132, 'ILS': 4.002764}}
+        case _:
+            response = requests.get(API_URL, params={
+                "access_key": API_KEY,
+                "symbols": "USD,ILS",
+            }).json()
 
     realRate = response['rates']['ILS'] / response['rates']['USD']
     return realRate * 1.014204545454545
 
 def investLogic(salary):
     toInvest = salary * 0.65
-    rate = getBlinkRate()
+    rate = getExchangeRate()
     btb = toInvest / 3
     stocksILS = (toInvest - btb)
     stocks = stocksILS / rate
     qqqm = stocks / 3
     acwi = stocks - qqqm
-    output = f"Blink Rate: {rate:.2f}\nTotal Stocks: ${stocks:.2f} ({stocksILS:.2f} ILS)\nACWI: ${acwi:.2f}\nQQQM: ${qqqm:.2f}\nBTB: {btb:.2f} ILS"
+    output = f"💲Blink Rate: {rate:.2f}\n🏦 Total Stocks: ${stocks:.2f} ({stocksILS:.2f} ILS)\n🌍 ACWI: ${acwi:.2f}\n👾 QQQM: ${qqqm:.2f}\n🤝 BTB: {btb:.2f} ILS"
     return output
 
 def bot_session():
@@ -38,9 +39,7 @@ def bot_session():
     logsPath = os.getenv("LOGS_PATH", "./logs")
 
     requests.get(f"{TELEGRAM_API_URL}{token}/sendMessage", data={"chat_id": myChatId, "text":
-        "Hey, it's time for investments📈💵!"
-        "\nwhat's the salary this month?💰"
-        "\nI'll be here for the next hour :) "})
+        "Hey, it's time for investments📈💵!\nwhat's the salary this month?💰\nI'll be here for the next hour :) "})
     
     session_timestamp = int(time.time())
 
