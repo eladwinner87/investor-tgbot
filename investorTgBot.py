@@ -61,7 +61,7 @@ def bot_session():
         salary = user_input.get("result", [{}])[0].get("message", {}).get("text", "")
         
         result = investLogic(float(salary))
-        requests.get(f"{TELEGRAM_API_URL}{token}/sendMessage", data={"chat_id": myChatId, "text": f"Calculations for {salary} ILS:\n{result}"})
+        requests.get(f"{TELEGRAM_API_URL}{token}/sendMessage", data={"chat_id": myChatId, "text": f"🧮 Calculations for {salary} ILS:\n{result}"})
         with open(f"{logsPath}/invest_guide_{datetime.datetime.now().strftime('%d-%m-%Y')}.txt", "w") as f:
            print(result, file=f)
 
