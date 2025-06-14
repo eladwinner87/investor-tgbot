@@ -10,4 +10,4 @@ COPY . .
 
 RUN mkdir logs
 
-CMD ["python", "investor.py"]
+CMD ["python", "bot.py"]

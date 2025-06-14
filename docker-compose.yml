@@ -4,7 +4,7 @@ services:
     env_file:
       - .env
     volumes:
-      - logs:/app/logs
+      - ./logs:/app/logs
 
 volumes:
   logs:
