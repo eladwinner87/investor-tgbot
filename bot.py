@@ -5,7 +5,7 @@ from utils.investLogic import investLogic
 from config import Config
 
 def bot():
-    token, chatId, logsPath = Config.BOT_TOKEN, Config.CHAT_ID, Config.LOGS_PATH
+    token, logsPath = Config.BOT_TOKEN, Config.LOGS_PATH
 
     TelegramAPI().send_message("Hey, it's time for investments📈💵!\nwhat's the salary this month?💰\nTake your time :) ")
 
@@ -20,7 +20,7 @@ def bot():
             requests.get(f"{TELEGRAM_API_URL}{token}/sendMessage", data={"chat_id": chatId, "text": "Turning off soon⏳"})
         i += 1
 
-    if response_timestamp > session_timestamp and chat_id == chatId:
+    if response_timestamp > session_timestamp and chat_id == Config.CHAT_ID:
         salary = int(response.get("result", [{}])[0].get("message", {}).get("text", ""))
         result = investLogic(salary)
         TelegramAPI().send_message(f"🧮 Calculations for {salary} ILS:\n{result}")
