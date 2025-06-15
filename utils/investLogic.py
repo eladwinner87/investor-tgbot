@@ -1,6 +1,6 @@
 from .rateConverter import getExchangeRate
 
-def investLogic(salary):
+def investLogic(salary: int) -> str:
     toInvest, rate = salary * 0.65, getExchangeRate()
     btb = toInvest / 3
     stocksILS = (toInvest - btb)
