@@ -2,8 +2,7 @@ import time, datetime
 from config import Config
 from utils import telegramAPI, investLogic
 
-TelegramAPI = telegramAPI.TelegramAPI
-investLogic = investLogic.investLogic
+TelegramAPI, investLogic = telegramAPI.TelegramAPI, investLogic.investLogic
 
 def bot():
     TelegramAPI().send_message("Hey, it's time for investments📈💵!\nwhat's the salary this month?💰\nTake your time :) ")
