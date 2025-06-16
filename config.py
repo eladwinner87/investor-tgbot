@@ -9,9 +9,12 @@ class Config:
     
     API_URL = os.getenv("API_URL")
     API_KEY = os.getenv("API_KEY")
-    
+
+    TO_INVEST_PERCENTAGE = float(os.getenv("TO_INVEST_PERCENTAGE"))
+    EXCHANGE_COMMISSION = float(os.getenv("EXCHANGE_COMMISSION", 1))
+
     ENV = os.getenv("ENV", "dev")
     LOGS_PATH = os.getenv("LOGS_PATH", "./logs")
-    
-    TIMEOUT = 4500
-    WARNING_TIME = 3000
+
+    TIMEOUT = int(os.getenv("TIMEOUT"))
+    WARNING_TIME = int(os.getenv("WARNING_TIME"))

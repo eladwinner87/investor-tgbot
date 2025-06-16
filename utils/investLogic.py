@@ -1,7 +1,8 @@
 from .rateConverter import getExchangeRate
+from config import Config
 
 def investLogic(salary: int) -> str:
-    toInvest, rate = salary * 0.65, getExchangeRate()
+    toInvest, rate = salary * Config.TO_INVEST_PERCENTAGE / 100 , getExchangeRate()
     btb = toInvest / 3
     stocksILS = (toInvest - btb)
     stocks = stocksILS / rate
