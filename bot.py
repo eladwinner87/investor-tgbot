@@ -10,13 +10,13 @@ def bot():
 
     while not response_timestamp > session_timestamp and i < Config.TIMEOUT:
         response = TelegramAPI().get_updates()
-        chat_id = response['result'][0]['message']['chat']['id']
         response_timestamp = response.get("result", [{}])[0].get("message", {}).get("date", "")
 
         if i == Config.WARNING_TIME:
             TelegramAPI().send_message("Turning off soon⏳")
         i += 1
 
+    chat_id = response['result'][0]['message']['chat']['id']
     if response_timestamp > session_timestamp and chat_id == Config.CHAT_ID:
         salary = int(response.get("result", [{}])[0].get("message", {}).get("text", ""))
         result = investLogic(salary)
