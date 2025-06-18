@@ -1,12 +1,29 @@
+from config import Investor
 from .rateConverter import getExchangeRate
-from config import Config
+
+TO_INVEST_PERCENTAGE, EXCHANGE_COMMISSION = Investor.TO_INVEST_PERCENTAGE, Investor.EXCHANGE_COMMISSION
+USD_TARGETS, ILS_TARGETS, RATIOS = Investor.USD_TARGETS, Investor.ILS_TARGETS, Investor.RATIOS
 
 def investLogic(salary: int) -> str:
-    toInvest, rate = salary * Config.TO_INVEST_PERCENTAGE / 100 , getExchangeRate()
-    btb = toInvest / 3
-    stocksILS = (toInvest - btb)
-    stocks = stocksILS / rate
-    qqqm = stocks / 3
-    acwi = stocks - qqqm
-    output = f"💲Blink Rate: {rate:.2f}\n🏦 Total Stocks: ${stocks:.2f} ({stocksILS:.2f} ILS)\n🌍 ACWI: ${acwi:.2f}\n👾 QQQM: ${qqqm:.2f}\n🤝 BTB: {btb:.2f} ILS"
+    toInvest = salary * TO_INVEST_PERCENTAGE
+    rate = getExchangeRate() * EXCHANGE_COMMISSION
+
+    targets = {}
+
+    for target in USD_TARGETS + ILS_TARGETS:
+        targets[target] = float(toInvest * RATIOS[f"{target}_PERCENTAGE"])
+
+        if target in USD_TARGETS:
+            targets[target] = targets[target] / rate
+
+    output = f"💰 Investment Breakdown:\n💲 Blink Rate: {rate:.2f}\n"
+
+    for target in targets:
+        if target in ILS_TARGETS:
+            output += f"🇮🇱 {target}: ILS {targets[target]:.2f}\n"
+        elif target in USD_TARGETS:
+            output += f"🇺🇸 {target}: ${targets[target]:.2f}\n"
+
     return output
+
+# 🏦🌍👾🤝

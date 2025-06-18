@@ -18,4 +18,4 @@ def getExchangeRate():
             response = RateConverter.fetchLiveRate()
 
     realRate = response['rates']['ILS'] / response['rates']['USD']
-    return realRate * Config.EXCHANGE_COMMISSION
+    return realRate

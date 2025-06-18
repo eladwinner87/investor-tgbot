@@ -20,8 +20,8 @@ def bot():
     if response_timestamp > session_timestamp and chat_id == Config.CHAT_ID:
         salary = int(response.get("result", [{}])[0].get("message", {}).get("text", ""))
         result = investLogic(salary)
-        TelegramAPI().send_message(f"🧮 Calculations for {salary} ILS:\n{result}")
-        with open(f"{Config.LOGS_PATH}/investor_sum_{datetime.datetime.now().strftime('%d-%m-%Y')}.txt", "w") as f:
+        TelegramAPI().send_message(result)
+        with open(f"{Config.LOGS_PATH}/investor_summary_{datetime.datetime.now().strftime('%d-%m-%Y')}.txt", "w") as f:
            print(result, file=f)
     else:
         TelegramAPI().send_message("Okay see you next month I guess!")
