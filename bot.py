@@ -17,9 +17,9 @@ def bot():
         Config.TIMER += 1
 
     if Config.TIMER < Config.TIMEOUT:
-        salary = response["salary"]
-        result = investLogic(salary)
+        result = investLogic(response["salary"])
         TelegramAPI().send_message(result)
+        
         with open(f"{Config.LOGS_PATH}/investor_summary_{datetime.datetime.now().strftime('%d-%m-%Y')}.txt", "w") as f:
            print(result, file=f)
     else:

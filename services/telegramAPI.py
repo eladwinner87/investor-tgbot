@@ -7,16 +7,19 @@ class TelegramAPI:
     def send_message(self, text):
         return requests.get(
             f"{self.BASE_URL}/sendMessage",
-            data={"chat_id": Config.CHAT_ID, "text": text}
+            data={
+                "chat_id": Config.CHAT_ID,
+                "text": text
+            }
         )
     
     def retrieve_response(self):
-        raw_response = requests.get(f"{self.BASE_URL}/getUpdates?offset=-1").json()
+        base_response = requests.get(f"{self.BASE_URL}/getUpdates?offset=-1").json()["result"][0]['message']
 
         response = {}
 
-        response["chat_id"] = int(raw_response['result'][0]['message']['chat']['id'])
-        response["timestamp"] = int(raw_response.get("result", [{}])[0].get("message", {}).get("date", ""))
-        response["salary"] = int(raw_response.get("result", [{}])[0].get("message", {}).get("text", ""))
+        response["chat_id"] = int(base_response["chat"]["id"])
+        response["timestamp"] = int(base_response["date"])
+        response["salary"] = int(base_response["text"])
 
         return response
