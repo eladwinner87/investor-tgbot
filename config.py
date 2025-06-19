@@ -12,6 +12,7 @@ class Config:
     API_URL = os.getenv("API_URL")
     API_KEY = os.getenv("API_KEY")
 
+    TIMER = 0
     TIMEOUT = int(os.getenv("TIMEOUT"))
     WARNING_TIME = int(os.getenv("WARNING_TIME"))
     
