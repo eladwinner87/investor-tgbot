@@ -15,8 +15,8 @@ class TelegramAPI:
 
         response = {}
 
-        response["chat_id"] = raw_response['result'][0]['message']['chat']['id']
-        response["timestamp"] = raw_response.get("result", [{}])[0].get("message", {}).get("date", "")
+        response["chat_id"] = int(raw_response['result'][0]['message']['chat']['id'])
+        response["timestamp"] = int(raw_response.get("result", [{}])[0].get("message", {}).get("date", ""))
         response["salary"] = int(raw_response.get("result", [{}])[0].get("message", {}).get("text", ""))
 
         return response

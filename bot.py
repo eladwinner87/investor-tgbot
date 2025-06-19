@@ -1,6 +1,6 @@
 import time, datetime
 from config import Config
-from utils import telegramAPI, investLogic
+from services import telegramAPI, investLogic
 
 TelegramAPI, investLogic = telegramAPI.TelegramAPI, investLogic.investLogic
 
@@ -16,7 +16,7 @@ def bot():
             TelegramAPI().send_message("Turning off soon⏳")
         Config.TIMER += 1
 
-    if response["timestamp"] > session_timestamp and response["chat_id"] == Config.CHAT_ID:
+    if Config.TIMER < Config.TIMEOUT:
         salary = response["salary"]
         result = investLogic(salary)
         TelegramAPI().send_message(result)
