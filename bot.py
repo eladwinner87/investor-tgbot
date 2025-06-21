@@ -5,18 +5,20 @@ from services import telegramAPI, investLogic
 TelegramAPI, investLogic = telegramAPI.TelegramAPI, investLogic.investLogic
 
 def bot():
-    TelegramAPI().send_message("Hey, it's time for investments📈💵!\nwhat's the salary this month?💰\nTake your time :) ")
-    session_timestamp = int(time.time())
-    response = TelegramAPI().retrieve_response()
+    SESSION_START = int(time.time())
+    TelegramAPI().send_message("Hey, it's time for investments📈💵!\nwhat's the salary this month?💰\nTake your time :)")
 
-    while not response["timestamp"] > session_timestamp and Config.TIMER < Config.TIMEOUT:
+    while int(time.time()) - SESSION_START < Config.TIMEOUT:
+        ELAPSED_TIME = int(time.time()) - SESSION_START
         response = TelegramAPI().retrieve_response()
 
-        if Config.TIMER == Config.WARNING_TIME:
+        if response["timestamp"] > SESSION_START:
+            break
+        elif ELAPSED_TIME == Config.WARNING_TIME:
             TelegramAPI().send_message("Turning off soon⏳")
-        Config.TIMER += 1
+            time.sleep(1)
 
-    if Config.TIMER < Config.TIMEOUT:
+    if response["timestamp"] > SESSION_START:
         result = investLogic(response["salary"])
         TelegramAPI().send_message(result)
         

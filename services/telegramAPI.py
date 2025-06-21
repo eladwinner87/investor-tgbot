@@ -14,7 +14,7 @@ class TelegramAPI:
         )
     
     def retrieve_response(self):
-        base_response = requests.get(f"{self.BASE_URL}/getUpdates?offset=-1").json()["result"][0]['message']
+        base_response = requests.get(f"{self.BASE_URL}/getUpdates?offset=-1").json()["result"][0]["message"]
 
         response = {}
 
