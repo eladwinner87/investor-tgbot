@@ -1,14 +1,14 @@
 import requests
-from config import Config
+from config import TelegramCreds
 
 class TelegramAPI:
-    BASE_URL = f"https://api.telegram.org/bot{Config.BOT_TOKEN}"
+    BASE_URL = f"https://api.telegram.org/bot{TelegramCreds.BOT_TOKEN}"
     
     def send_message(self, text):
         return requests.get(
             f"{self.BASE_URL}/sendMessage",
             data={
-                "chat_id": Config.CHAT_ID,
+                "chat_id": TelegramCreds.CHAT_ID,
                 "text": text
             }
         )

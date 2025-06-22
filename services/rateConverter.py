@@ -1,10 +1,10 @@
-from config import Config
+from config import Config, RateConverterCreds
 import requests
 
 class RateConverter:
     def fetchLiveRate() -> dict:
-        return requests.get(Config.API_URL, params={
-                "access_key": Config.API_KEY,
+        return requests.get(RateConverterCreds.API_URL, params={
+                "access_key": RateConverterCreds.API_KEY,
                 "symbols": "USD,ILS",
                 }).json()
 
