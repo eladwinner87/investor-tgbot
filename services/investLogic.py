@@ -1,12 +1,12 @@
 from config import Investor
-from .rateConverter import getExchangeRate
+from .rateConverter import RateConverter
 
 TO_INVEST_PERCENTAGE, EXCHANGE_COMMISSION = Investor.TO_INVEST_PERCENTAGE, Investor.EXCHANGE_COMMISSION
 USD_TARGETS, ILS_TARGETS, RATIOS = Investor.USD_TARGETS, Investor.ILS_TARGETS, Investor.RATIOS
 
 def investLogic(salary: int) -> str:
     toInvest = salary * TO_INVEST_PERCENTAGE
-    rate = getExchangeRate() * EXCHANGE_COMMISSION
+    rate = RateConverter.getExchangeRate() * EXCHANGE_COMMISSION
 
     targets = {}
 
