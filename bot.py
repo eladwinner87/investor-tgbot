@@ -8,8 +8,8 @@ def bot():
     
     response = TelegramAPI.retrieve_response(Config.TIMEOUT, Config.WARNING_TIME)
 
-    if response["new"]:
-        result = investLogic(response["salary"])
+    if response:
+        result = investLogic(response)
         TelegramAPI.send_message(result)
         
         with open(Config.LOG_FILENAME, "w") as f:

@@ -16,23 +16,23 @@ class TelegramAPI:
     
     def retrieve_response(TIMEOUT, WARNING):
         SESSION_START = int(time.time())
-        base_response = requests.get(f"{TelegramAPI.BASE_URL}/getUpdates?offset=-1").json()["result"][0]["message"]
+        response = None
+        
+        while (
+            int(time.time()) - SESSION_START < TIMEOUT and
+            (response is None
+            or response["chat"]["id"] != TelegramCreds.CHAT_ID
+            or response["date"] <= SESSION_START)
+            ):
 
-        while base_response["date"] <= SESSION_START and int(time.time()) - SESSION_START < TIMEOUT:
-            base_response = requests.get(f"{TelegramAPI.BASE_URL}/getUpdates?offset=-1").json()["result"][0]["message"]
+            response = requests.get(f"{TelegramAPI.BASE_URL}/getUpdates?offset=-1").json()["result"][0]["message"]
 
             if int(time.time()) - SESSION_START == WARNING:
                 TelegramAPI.send_message("Turning off soon⏳")
                 time.sleep(1)
-    
-        response = {}
-        response["chat_id"] = int(base_response["chat"]["id"])
-        response["timestamp"] = int(base_response["date"])
-        response["salary"] = int(base_response["text"])
 
-        if base_response["date"] > SESSION_START:
-            response["new"] = True
+        if response["date"] > SESSION_START:
+            salary = int(response["text"])
+            return salary
         else:
-            response["new"] = False
-
-        return response
+            return False
