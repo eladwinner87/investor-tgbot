@@ -1,12 +1,13 @@
 import requests
 import time
-from config import TelegramCreds
+from config import Config, TelegramCreds
 
 class TelegramAPI:
     BASE_URL = f"https://api.telegram.org/bot{TelegramCreds.BOT_TOKEN}"
     
+    @staticmethod
     def send_message(text):
-        return requests.get(
+        return requests.post(
             f"{TelegramAPI.BASE_URL}/sendMessage",
             data={
                 "chat_id": TelegramCreds.CHAT_ID,
@@ -14,24 +15,29 @@ class TelegramAPI:
             }
         )
     
-    def retrieve_response(TIMEOUT, WARNING):
+    @staticmethod
+    def retrieve_response():
+        return requests.get(f"{TelegramAPI.BASE_URL}/getUpdates?offset=-1").json()["result"][0]["message"]
+
+    @staticmethod
+    def get_salary():
         SESSION_START = int(time.time())
         response = None
         
         while (
-            int(time.time()) - SESSION_START < TIMEOUT and
+            int(time.time()) - SESSION_START <= Config.TIMEOUT and
             (response is None
             or response["chat"]["id"] != TelegramCreds.CHAT_ID
             or response["date"] <= SESSION_START)
             ):
 
-            response = requests.get(f"{TelegramAPI.BASE_URL}/getUpdates?offset=-1").json()["result"][0]["message"]
+            response = TelegramAPI.retrieve_response()
 
-            if int(time.time()) - SESSION_START == WARNING:
+            if int(time.time()) - SESSION_START == Config.WARNING_TIME:
                 TelegramAPI.send_message("Turning off soon⏳")
                 time.sleep(1)
 
-        if response["date"] > SESSION_START:
+        if int(time.time()) - SESSION_START <= Config.TIMEOUT:
             salary = int(response["text"])
             return salary
         else:
