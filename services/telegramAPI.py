@@ -17,18 +17,18 @@ class TelegramAPI:
     
     @staticmethod
     def retrieve_response():
-        return requests.get(f"{TelegramAPI.BASE_URL}/getUpdates?offset=-1").json()["result"][0]["message"]
+        return requests.get(f"{TelegramAPI.BASE_URL}/getUpdates?offset=-1").json()["result"]
 
     @staticmethod
     def get_salary():
         SESSION_START = int(time.time())
-        response = None
+        response = []
         
         while (
             int(time.time()) - SESSION_START <= Config.TIMEOUT and
-            (response is None
-            or response["chat"]["id"] != TelegramCreds.CHAT_ID
-            or response["date"] <= SESSION_START)
+            (response == []
+            or response[0]["message"]["chat"]["id"] != TelegramCreds.CHAT_ID
+            or response[0]["message"]["date"] <= SESSION_START)
             ):
 
             response = TelegramAPI.retrieve_response()
@@ -38,7 +38,7 @@ class TelegramAPI:
                 time.sleep(1)
 
         if int(time.time()) - SESSION_START <= Config.TIMEOUT:
-            salary = int(response["text"])
+            salary = int(response[0]["message"]["text"])
             return salary
         else:
             return False
