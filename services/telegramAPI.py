@@ -38,7 +38,7 @@ class TelegramAPI:
                 time.sleep(1)
 
         if int(time.time()) - SESSION_START <= Config.TIMEOUT:
-            salary = int(response[0]["message"]["text"])
+            salary = int(response[0]["message"]["text"].replace(",", ""))
             return salary
         else:
             return False
