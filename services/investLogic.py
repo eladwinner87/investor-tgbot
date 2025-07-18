@@ -3,7 +3,10 @@ from .rateConverter import RateConverter
 
 def investLogic(salary: int) -> str:
     toInvest = salary * Investor.TO_INVEST_PERCENTAGE
+    output = f"💵 Total to Invest: ILS {toInvest:.2f}\n"
+
     rate = RateConverter.getExchangeRate() * Investor.EXCHANGE_COMMISSION
+    output += f"💲 Blink Rate: {rate:.2f}\n"
 
     targets = {}
 
@@ -13,7 +16,6 @@ def investLogic(salary: int) -> str:
         if target in Investor.USD_TARGETS:
             targets[target] = targets[target] / rate
 
-    output = f"💰 Investment Breakdown:\n💲 Blink Rate: {rate:.2f}\n"
 
     for target in targets:
         if target in Investor.ILS_TARGETS:
