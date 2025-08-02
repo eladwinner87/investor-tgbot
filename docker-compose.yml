@@ -1,8 +1,11 @@
 services:
   investor:
     image: investor
+    build: .
     env_file:
       - .env
+    environment:
+      - ENV=prod
     volumes:
       - ./logs:/app/logs
 
