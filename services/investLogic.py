@@ -1,4 +1,4 @@
-from config import Investor
+from config import Investor, Config
 from .rateConverter import RateConverter
 
 def investLogic(salary: int) -> dict:
@@ -27,8 +27,12 @@ def format_output(salary: int) -> str:
     data = investLogic(salary)
 
     output = []
-    output.append(f"Total Investment: {data['total_investment']:.2f}")
-    output.append(f"Exchange Rate: {data['rate']:.2f}")
+
+    if Config.ENV == 'dev':
+        output.append("===TEST RUN===")
+
+    output.append(f"💵 Total Investment: {data['total_investment']:.2f}")
+    output.append(f"💲 Blink Rate: {data['rate']:.2f}")
     output.append("Targets:")
 
     for target, info in data['targets'].items():
