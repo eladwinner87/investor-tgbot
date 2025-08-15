@@ -1,28 +1,37 @@
 from config import Investor
 from .rateConverter import RateConverter
 
-def investLogic(salary: int) -> str:
-    toInvest = salary * Investor.TO_INVEST_PERCENTAGE
-    output = f"💵 Total to Invest: ILS {toInvest:.2f}\n"
+def investLogic(salary: int) -> dict:
+    data = {}
 
-    rate = RateConverter.getExchangeRate() * Investor.EXCHANGE_COMMISSION
-    output += f"💲 Blink Rate: {rate:.2f}\n"
-
-    targets = {}
+    data['total_investment'] = float(salary * Investor.TO_INVEST_RATIO)
+    data['rate'] = RateConverter.getExchangeRate() * Investor.EXCHANGE_COMMISSION
+    data['targets'] = {}
 
     for target in Investor.USD_TARGETS + Investor.ILS_TARGETS:
-        targets[target] = float(toInvest * Investor.RATIOS[f"{target}_PERCENTAGE"])
+        target_amount = data['total_investment'] * Investor.RATIOS[f"{target}_RATIO"]
 
         if target in Investor.USD_TARGETS:
-            targets[target] = targets[target] / rate
+            target_amount = target_amount / data['rate']
+            target_currency = 'USD'
+        else:
+            target_currency = 'ILS'
+        
+        data['targets'][target] = {}
+        data['targets'][target]['amount'] = target_amount
+        data['targets'][target]['currency'] = target_currency
+    return data
 
 
-    for target in targets:
-        if target in Investor.ILS_TARGETS:
-            output += f"🇮🇱 {target}: ILS {targets[target]:.2f}\n"
-        elif target in Investor.USD_TARGETS:
-            output += f"🇺🇸 {target}: ${targets[target]:.2f}\n"
+def format_output(salary: int) -> str:
+    data = investLogic(salary)
 
-    return output
+    output = []
+    output.append(f"Total Investment: {data['total_investment']:.2f}")
+    output.append(f"Exchange Rate: {data['rate']:.2f}")
+    output.append("Targets:")
 
-# 🏦🌍👾🤝
+    for target, info in data['targets'].items():
+        output.append(f"{target}: {info['amount']:.2f} {info['currency']}")
+
+    return "\n".join(output)

@@ -22,7 +22,7 @@ class RateConverterCreds:
     API_KEY = os.getenv("API_KEY")
 
 class Investor:
-    TO_INVEST_PERCENTAGE = float(os.getenv("TO_INVEST_PERCENTAGE"))
+    TO_INVEST_RATIO = float(os.getenv("TO_INVEST_RATIO"))
     EXCHANGE_COMMISSION = float(os.getenv("EXCHANGE_COMMISSION", 1))
 
     USD_TARGETS = os.getenv("USD_TARGETS", "").split(",")
@@ -31,4 +31,4 @@ class Investor:
     RATIOS = {}
 
     for TARGET in USD_TARGETS + ILS_TARGETS:
-        RATIOS[f"{TARGET}_PERCENTAGE"] = float(os.getenv(f"{TARGET}_PERCENTAGE"))
+        RATIOS[f"{TARGET}_RATIO"] = float(os.getenv(f"{TARGET}_RATIO"))
