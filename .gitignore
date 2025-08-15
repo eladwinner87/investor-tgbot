@@ -1,5 +1,5 @@
 .env
 logs/
-**/*pycache* 
+__pycache__/
 gemini*
 Makefile

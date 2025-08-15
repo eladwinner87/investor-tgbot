@@ -1,15 +1,14 @@
 from config import Config
 from services.telegramAPI import TelegramAPI
-from services.investLogic import investLogic, format_output
+from services.investLogic import format_output as process_investments
 
-def bot():
+def bot():    
     TelegramAPI.send_message("Hey, it's time for investments📈💵!\nwhat's the salary this month?💰\nTake your time :)")
-    response = TelegramAPI.get_salary()
+    user_salary = TelegramAPI.get_salary()
 
-    if response:
-        data = investLogic(response)
-        result = format_output(data)
-        
+    if user_salary:
+        result = process_investments(user_salary)
+
         TelegramAPI.send_message(result)
         
         with open(Config.LOG_FILENAME, "w") as f:
