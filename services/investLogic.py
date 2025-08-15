@@ -4,12 +4,12 @@ from .rateConverter import RateConverter
 def investLogic(salary: int) -> dict:
     data = {}
 
-    data['total_investment'] = float(salary * Investor.TO_INVEST_PERCENTAGE)
+    data['total_investment'] = float(salary * Investor.TO_INVEST_RATIO)
     data['rate'] = RateConverter.getExchangeRate() * Investor.EXCHANGE_COMMISSION
     data['targets'] = {}
 
     for target in Investor.USD_TARGETS + Investor.ILS_TARGETS:
-        target_amount = data['total_investment'] * Investor.RATIOS[f"{target}_PERCENTAGE"]
+        target_amount = data['total_investment'] * Investor.RATIOS[f"{target}_RATIO"]
 
         if target in Investor.USD_TARGETS:
             target_amount = target_amount / data['rate']
