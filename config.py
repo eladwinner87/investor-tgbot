@@ -25,8 +25,15 @@ class Investor:
     TO_INVEST_RATIO = float(os.getenv("TO_INVEST_RATIO"))
     EXCHANGE_COMMISSION = float(os.getenv("EXCHANGE_COMMISSION", 1))
 
-    USD_TARGETS = os.getenv("USD_TARGETS", "").split(",")
-    ILS_TARGETS = os.getenv("ILS_TARGETS", "").split(",")
+    if os.getenv("USD_TARGETS"):
+        USD_TARGETS = os.getenv("USD_TARGETS").split(",")
+    else:
+        USD_TARGETS = []
+
+    if os.getenv("ILS_TARGETS"):
+        ILS_TARGETS = os.getenv("ILS_TARGETS").split(",")
+    else:
+        ILS_TARGETS = []
 
     RATIOS = {}
 

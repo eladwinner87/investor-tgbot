@@ -4,10 +4,12 @@ import requests
 class RateConverter:
     @staticmethod
     def fetchLiveRate() -> dict:
-        return requests.get(RateConverterCreds.API_URL, params={
+        return requests.get(
+            RateConverterCreds.API_URL,
+            params={
                 "access_key": RateConverterCreds.API_KEY,
                 "symbols": "USD,ILS",
-                }).json()
+            }).json()
 
     EXAMPLE_RESPONSE = {'success': True, 'timestamp': 1748966344, 'base': 'EUR', 'date': '2025-06-03', 'rates': {'USD': 1.137132, 'ILS': 4.002764}}
 
