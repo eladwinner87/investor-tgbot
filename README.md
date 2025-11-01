@@ -1,6 +1,6 @@
-# Welcome to Investor Telegram Bot - the ultimate tool for true sloth investors🦥
+# Welcome to Investor Telegram Bot - the ultimate tool for true sloth investors 🦥
 
-A self-hosted, compact Python application that uses a personal Telegram bot to automate and simplify Dollar-Cost Averaging (DCA) investments. It calculates investment amounts based on your salary, converts currencies, and accounts for commissions, providing you with the exact numbers to use in your brokerage app with zero mental energy wasted🙏
+A self-hosted, compact Python application that uses a personal Telegram bot to automate and simplify Dollar-Cost Averaging (DCA) investments. It calculates investment amounts based on your salary, converts currencies where needed, accounts your broker's commission and providing you with the exact numbers to use in your trading app with zero mental energy wasted 🙏
 
 ## ✨ Features
 
@@ -9,7 +9,7 @@ A self-hosted, compact Python application that uses a personal Telegram bot to a
 - **Multi-Stock Support**: Define which stocks to invest in and what percentage of the total amount to allocate to each.
 You can optionally use either Israeli, American investment targets or both!
 - **Real-time Currency Conversion**: Uses an exchange rate API to handle currency conversions accurately in real time.
-- **Dockerized**: Includes a `Dockerfile` and `docker-compose.yml` for easy, containerized deployment.
+- **Dockerized**: Includes a `Dockerfile` and `docker-compose` files for easy, containerized deployment.
 - **Configurable**: All settings are managed via a simple `.env` file.
 
 ## 🏁 Getting Started
@@ -35,7 +35,7 @@ Before you begin, you will need to gather the following credentials:
 
 1.  **Clone the repository:**
     ```sh
-    git clone <your-repository-url>
+    git clone https://github.com/eladwinner87/investor-tgbot.git
     cd investor-tgbot
     ```
 
@@ -62,7 +62,6 @@ You can now run the bot on a Docker container or directly using Python.
     ```sh
     docker-compose up --build
     ```
-2.  The bot will start, and you will be prompted on Telegram for your latest salary.
 
 ### Method 2: Running Directly with Python
 
@@ -76,15 +75,17 @@ You can now run the bot on a Docker container or directly using Python.
     python bot.py
     ```
 
+The bot will start, and you will be prompted on Telegram for your latest salary.
+
 ---
 
-## 🤖 Automating with Cronjob
+## 🗓️ Automating with Cronjob
 
-For a true lazy investor expreience, you may schedule the bot to run periodically using a tool like `cron` on linux or `Task Scheduler` on Windows.
+To achieve the true lazy investor expreience, you may schedule the bot to run periodically using a tool like `cron` on linux or Task Scheduler on Windows.
 
 For example, to run the bot on the first day of every month, you could add the following to your crontab:
 
 ```cron
 0 17 4 * * docker-compose -f /path/to/your/investor-tgbot up --build
 ```
-This command will navigate to your project directory and launch the bot at 5 PM on the 4th of every month.
+This command, for example, will launch the bot at 5 PM on the 4th of every month.
