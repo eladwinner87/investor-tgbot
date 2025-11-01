@@ -80,7 +80,7 @@ You can now run the bot on a Docker container or directly using Python.
 
 ## 🤖 Automating with Cronjob
 
-For true "lazy investor" automation, you may schedule the bot to run periodically using a tool like `cron` on linux or `Task Scheduler` on Windows.
+For a true lazy investor expreience, you may schedule the bot to run periodically using a tool like `cron` on linux or `Task Scheduler` on Windows.
 
 For example, to run the bot on the first day of every month, you could add the following to your crontab:
 
