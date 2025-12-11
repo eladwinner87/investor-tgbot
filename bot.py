@@ -11,8 +11,10 @@ def bot():
 
         TelegramAPI.send_message(result)
         
-        with open(Config.LOG_FILENAME, "w") as f:
-           print(result, file=f)
+        if Config.ENV != 'dev':
+            with open(Config.LOG_FILENAME, "w") as f:
+                print(result, file=f)
+
     else:
         TelegramAPI.send_message("Okay see you next month I guess!")
 
