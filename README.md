@@ -60,7 +60,7 @@ You can now run the bot on a Docker container or directly using Python.
 
 1.  **Build and run the container:**
     ```sh
-    docker-compose up --build
+    docker compose up --build
     ```
 
 ### Method 2: Running Directly with Python
